@@ -178,7 +178,7 @@ Distributed under the MIT License.
 
 <!-- More about -->
 ## More about AES Rijndael cipher
- - https://www.youtube.com/watch?v=gP4PqVGudtg
+ - https://youtu.be/gP4PqVGudtg
  - https://youtu.be/NHuibtoL_qk
  - https://www.johndcook.com/blog/2019/05/25/aes-s-box/
  - https://en.wikipedia.org/wiki/Rijndael_S-box
