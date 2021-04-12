@@ -121,6 +121,9 @@ encryption scheme, the function returns a string composed of int type elements.
 <br>
 <br>
 This text can be placed in the decoding function that returns the string as it was entered for the first time. 
+<br>
+<br>
+The algorithm before encryption/decryption always breaks down the message into blocks of 16 characters, and then go through the entire scheme for each block
 
 ### ASCII TABLE
 <p align="center">
