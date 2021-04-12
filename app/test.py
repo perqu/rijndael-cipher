@@ -54,5 +54,18 @@ class TestCipher(unittest.TestCase):
         decoded_message = cipher.decode_message(encoded_message)
         self.assertEqual(decoded_message, text)
 
+    def test_different_key(self):
+        text = 'python'
+
+        key = '0123456789abcddd'
+
+        cipher.add_key(key)
+        encoded_message = cipher.encode_message(text)
+
+        key = '0123456789abcdef'
+        cipher.add_key(key)
+        decoded_message = cipher.decode_message(encoded_message)
+        self.assertNotEqual(decoded_message, text)
+
 if __name__ == '__main__':
     unittest.main()
