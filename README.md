@@ -95,7 +95,20 @@ Firstly, you have to install all dependencies
   ```sh
   python3 test.py
   ```
-  4. FastAPI usage:
+  4. Docker:
+  Build docker image
+  ```sh
+  sudo docker build -t myimage .
+  ```
+  5. Run app in a docker
+  ```sh
+  sudo docker run -d --network="host" --name mycontainer -p 80:80 myimage
+  ```
+  6. To connect to docker app:
+  ```sh
+  In your browser: http://localhost/docs
+  ```
+  7. FastAPI usage:
 <p align="center">
     <img src="materials/cipher.gif" alt="ASCII" width="800">
 </p>
