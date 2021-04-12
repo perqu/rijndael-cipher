@@ -173,7 +173,7 @@ The most complicated operation, the picture below shows an example calculation f
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the MIT License.
 
 
 <!-- More about -->
