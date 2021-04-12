@@ -33,7 +33,7 @@ def decode(message: str, is_authenticated: str = Depends(get_current_username)):
 
 
 @app.get("/add_key/{key}")
-def decode(key: str, is_authenticated: str = Depends(get_current_username)):
+def add_key(key: str, is_authenticated: str = Depends(get_current_username)):
     if is_authenticated == True:
         if cipher.add_key(key) == True:
             return {"KEY accepted"}
