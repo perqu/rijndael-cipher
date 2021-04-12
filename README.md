@@ -112,7 +112,7 @@ Firstly, you have to install all dependencies
 <p align="center">
     <img src="materials/cipher.gif" alt="ASCII" width="800">
 </p>
-    As you can see on the picture before each operation user have to provide proper key, only one key can decrypt encrypted message.
+    As you can see on the picture before each operation user have to provide proper key, only one key can decrypt encrypted message. the key must consist 16 characters (all ASCII char are supported without 3rd element)
 
 ## How it works
 The text to be encrypted must be given in the form of a string, then this string is converted to its representation in the ASCII table 
