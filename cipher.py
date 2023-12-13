@@ -1,4 +1,4 @@
-'''
+"""
 # ---------------------------------------------------------------
 # Program:    cipher.py
 # Version:    0.0.1 - 2021 April 11
@@ -13,12 +13,13 @@
 # cipher that can process data blocks of 128 bits, using
 # cipher keys with lengths of 128 bits
 # ---------------------------------------------------------------
-'''
+"""
 import random
 import os
 
+
 def read_sbox(size):
-    '''
+    """
     Reads inside key (sbox) from file: "sbox.txt" \n
     if such a file does not exist, the generate_inside_key function generates this file.
 
@@ -27,21 +28,22 @@ def read_sbox(size):
 
     Returns:
         sbox values - List of type int
-    '''
+    """
 
     if not os.path.exists("data/sbox.txt"):
         generate_inside_key(size)
 
     sbox = []
     with open("data/sbox.txt", "r") as file:
-        fields = file.read().strip().split(' ')
+        fields = file.read().strip().split(" ")
         for number in fields:
             sbox.append(int(number, 0))
 
     return sbox
 
+
 def read_inv_sbox(size):
-    '''
+    """
     Reads inverted key (inv_sbox) from file: "inv_sbox.txt" \n
     if such a file does not exist, the generate_inside_key function generates this file.
 
@@ -50,21 +52,22 @@ def read_inv_sbox(size):
 
     Returns:
         inv_sbox values - List of type int
-    '''
+    """
 
     if not os.path.exists("data/inv_sbox.txt"):
         generate_inside_key(size)
 
     inv_sbox = []
     with open("data/inv_sbox.txt", "r") as file:
-        fields = file.read().strip().split(' ')
+        fields = file.read().strip().split(" ")
         for number in fields:
             inv_sbox.append(int(number, 0))
 
     return inv_sbox
 
+
 def generate_inside_key(size):
-    '''
+    """
     Generate inside key (sbox) and inverted key (inv_sbox) \n
     Saves values to files: "sbox.txt", "inv_sbox.txt"
 
@@ -73,7 +76,7 @@ def generate_inside_key(size):
 
     Returns:
         None
-    '''
+    """
 
     list_xy = []
     sbox = []
@@ -94,16 +97,17 @@ def generate_inside_key(size):
         for counter, item in enumerate(sbox, 1):
             file.write("0x{:02x} ".format(item))
             if counter % 16 == 0:
-                file.write('\n')
+                file.write("\n")
 
     with open("data/inv_sbox.txt", "w") as file:
         for counter, item in enumerate(inv_sbox, 1):
             file.write("0x{:02x} ".format(item))
             if counter % 16 == 0:
-                file.write('\n')
+                file.write("\n")
+
 
 def read_user_key():
-    '''
+    """
     Reads user key (KEY) from file: "KEY.txt" \n
 
     Args:
@@ -111,17 +115,18 @@ def read_user_key():
 
     Returns:
         KEY values - List of type int
-    '''
+    """
 
     key = []
     with open("data/key.txt", "r") as file:
-        fields = file.read().strip().split(' ')
+        fields = file.read().strip().split(" ")
         for number in fields:
             key.append(int(number, 0))
     return key
 
+
 def read_rcon(size):
-    '''
+    """
     Reads rcon values from file: "rcon.txt" \n
     if such a file does not exist, the generate_rcon function generates this file.
 
@@ -130,20 +135,21 @@ def read_rcon(size):
 
     Returns:
         rcon values - List of type int
-    '''
+    """
 
     if not os.path.exists("data/rcon.txt"):
         generate_rcon(size)
     rcon = []
     with open("data/rcon.txt", "r") as file:
-        fields = file.read().strip().split(' ')
+        fields = file.read().strip().split(" ")
         for number in fields:
             rcon.append(int(number, 0))
 
     return rcon
 
+
 def generate_rcon(size):
-    '''
+    """
     Generate rcon values \n
     Saves values to file: "rcon.txt"
 
@@ -152,7 +158,7 @@ def generate_rcon(size):
 
     Returns:
         None
-    '''
+    """
 
     def generate_rcon_number(number):
         c = 1
@@ -160,21 +166,22 @@ def generate_rcon(size):
             return 0
         elif number == 1:
             return c
-        for i in range(number,1,-1):
+        for i in range(number, 1, -1):
             b = c & 0x80
             c <<= 1
             if b == 0x80:
-                c ^= 0x1b
+                c ^= 0x1B
         return c
 
     with open("data/rcon.txt", "w") as file:
         for i in range(size**2):
-            file.write('0x'+('{:02x}'.format(generate_rcon_number(i))[-2:]) + ' ')
+            file.write("0x" + ("{:02x}".format(generate_rcon_number(i))[-2:]) + " ")
             if i % 16 == 15:
-                file.write('\n')
+                file.write("\n")
+
 
 def create_blocks(message, size, calling_function):
-    '''
+    """
     Creates blocks (size x size) of ASCII values from string
 
     Args:
@@ -184,9 +191,9 @@ def create_blocks(message, size, calling_function):
 
     Returns:
         Values of ASCII representation from delivered string - List of lists (blocks)
-    '''
+    """
 
-    if calling_function == 'decoder':
+    if calling_function == "decoder":
         blocks = []
         message = list(map(int, message.strip().split(" ")))
         while len(message) > 0:
@@ -196,7 +203,7 @@ def create_blocks(message, size, calling_function):
             message = message[size:]
             blocks.append(message_block)
         return blocks
-    elif calling_function == 'encoder':
+    elif calling_function == "encoder":
         blocks = []
         while len(message) > 0:
             message_block = []
@@ -209,8 +216,9 @@ def create_blocks(message, size, calling_function):
         return blocks
     return 0
 
+
 def sub_bytes(block, size, sbox):
-    '''
+    """
     Translating all block values by byte substitution table (sbox)
 
     Args:
@@ -220,14 +228,15 @@ def sub_bytes(block, size, sbox):
 
     Returns:
         block - translated by sbox values - List of type int
-    '''
+    """
 
     for i in range(size):
         block[i] = sbox[block[i]]
     return block
 
+
 def inv_sub_bytes(block, size, inv_sbox):
-    '''
+    """
     Translating all block values by inverted byte substitution table (inv_sbox)
 
     Args:
@@ -237,14 +246,15 @@ def inv_sub_bytes(block, size, inv_sbox):
 
     Returns:
         block - translated by inv_sbox values - List of type int
-    '''
+    """
 
     for i in range(size):
         block[i] = inv_sbox[block[i]]
     return block
 
+
 def rotate_rows(block, rows_rotates):
-    '''
+    """
     Rotating over rows_rotates values, ex.  \n
 
     rows_rotates = (0,1,2,3)                \n
@@ -259,19 +269,20 @@ def rotate_rows(block, rows_rotates):
 
     Returns:
         block - list after rotates - List of type int
-    '''
+    """
 
     for row, row_rotates in enumerate(rows_rotates):
         for i in range(row_rotates):
-            temp = block[row*4]
-            block[row*4] = block[row*4 + 1]
-            block[row*4 + 1] = block[row*4 + 2]
-            block[row*4 + 2] = block[row*4 + 3]
-            block[row*4 + 3] = temp
+            temp = block[row * 4]
+            block[row * 4] = block[row * 4 + 1]
+            block[row * 4 + 1] = block[row * 4 + 2]
+            block[row * 4 + 2] = block[row * 4 + 3]
+            block[row * 4 + 3] = temp
     return block
 
+
 def inv_rotate_rows(block, rows_rotates):
-    '''
+    """
     Rotating over rows_rotates values in reverse direction, ex.  \n
 
     rows_rotates = (0,1,2,3)                \n
@@ -286,19 +297,20 @@ def inv_rotate_rows(block, rows_rotates):
 
     Returns:
         block - list after rotates - List of type int
-    '''
+    """
 
     for row, row_rotates in enumerate(rows_rotates):
         for i in range(row_rotates):
-            temp = block[row*4 + 3]
-            block[row*4 + 3] = block[row*4 + 2]
-            block[row*4 + 2] = block[row*4 + 1]
-            block[row*4 + 1] = block[row*4]
-            block[row*4] = temp
+            temp = block[row * 4 + 3]
+            block[row * 4 + 3] = block[row * 4 + 2]
+            block[row * 4 + 2] = block[row * 4 + 1]
+            block[row * 4 + 1] = block[row * 4]
+            block[row * 4] = temp
     return block
 
+
 def GF(numb_1, numb_2):
-    '''
+    """
     Interpretation of Galois multiplication of 2 numbers a and b
 
     Args:
@@ -307,19 +319,19 @@ def GF(numb_1, numb_2):
 
     Returns:
         result of GF(2) multiplication
-    '''
+    """
     result = 0
     for i in range(8):
         if (numb_2 & 1) == 1:
             result = result ^ numb_1
         if result > 0x100:
             result = result ^ 0x100
-        bit_set = (numb_1 & 0x80)
+        bit_set = numb_1 & 0x80
         numb_1 = numb_1 << 1
         if numb_1 > 0x100:
             numb_1 = numb_1 ^ 0x100
         if bit_set == 0x80:
-            numb_1 = numb_1 ^ 0x1b
+            numb_1 = numb_1 ^ 0x1B
         if numb_1 > 0x100:
             numb_1 = numb_1 ^ 0x100
         numb_2 = numb_2 >> 1
@@ -327,8 +339,9 @@ def GF(numb_1, numb_2):
             numb_2 = numb_2 ^ 0x100
     return result
 
+
 def mix_columns(block):
-    '''
+    """
     All block numbers are modulo multiplied       \n
     in Rijndael's Galois Field by a given matrix. \n
     To mix values the below matrix was used:      \n
@@ -342,18 +355,39 @@ def mix_columns(block):
 
     Returns:
         new_block - list after multiplication - List of type int
-    '''
+    """
 
     new_block = []
-    for i in range(0,16,4):
-        new_block.append(GF(2,block[i]) ^ GF(3,block[i+1]) ^ GF(1,block[i+2]) ^ GF(1,block[i+3]))
-        new_block.append(GF(1,block[i]) ^ GF(2,block[i+1]) ^ GF(3,block[i+2]) ^ GF(1,block[i+3]))
-        new_block.append(GF(1,block[i]) ^ GF(1,block[i+1]) ^ GF(2,block[i+2]) ^ GF(3,block[i+3]))
-        new_block.append(GF(3,block[i]) ^ GF(1,block[i+1]) ^ GF(1,block[i+2]) ^ GF(2,block[i+3]))
+    for i in range(0, 16, 4):
+        new_block.append(
+            GF(2, block[i])
+            ^ GF(3, block[i + 1])
+            ^ GF(1, block[i + 2])
+            ^ GF(1, block[i + 3])
+        )
+        new_block.append(
+            GF(1, block[i])
+            ^ GF(2, block[i + 1])
+            ^ GF(3, block[i + 2])
+            ^ GF(1, block[i + 3])
+        )
+        new_block.append(
+            GF(1, block[i])
+            ^ GF(1, block[i + 1])
+            ^ GF(2, block[i + 2])
+            ^ GF(3, block[i + 3])
+        )
+        new_block.append(
+            GF(3, block[i])
+            ^ GF(1, block[i + 1])
+            ^ GF(1, block[i + 2])
+            ^ GF(2, block[i + 3])
+        )
     return new_block
 
+
 def inv_mix_columns(block):
-    '''
+    """
     All block numbers are modulo multiplied       \n
     in Rijndael's Galois Field by a given matrix. \n
     To mix values the below matrix was used:      \n
@@ -367,18 +401,39 @@ def inv_mix_columns(block):
 
     Returns:
         new_block - list after multiplication - List of type int
-    '''
+    """
 
     new_block = []
-    for i in range(0,16,4):
-        new_block.append(GF(14,block[i])^GF(11,block[i+1])^GF(13,block[i+2])^GF(9,block[i+3]))
-        new_block.append(GF(9,block[i]) ^GF(14,block[i+1])^GF(11,block[i+2])^GF(13,block[i+3]))
-        new_block.append(GF(13,block[i])^GF(9,block[i+1]) ^GF(14,block[i+2])^GF(11,block[i+3]))
-        new_block.append(GF(11,block[i])^GF(13,block[i+1])^GF(9,block[i+2]) ^GF(14,block[i+3]))
+    for i in range(0, 16, 4):
+        new_block.append(
+            GF(14, block[i])
+            ^ GF(11, block[i + 1])
+            ^ GF(13, block[i + 2])
+            ^ GF(9, block[i + 3])
+        )
+        new_block.append(
+            GF(9, block[i])
+            ^ GF(14, block[i + 1])
+            ^ GF(11, block[i + 2])
+            ^ GF(13, block[i + 3])
+        )
+        new_block.append(
+            GF(13, block[i])
+            ^ GF(9, block[i + 1])
+            ^ GF(14, block[i + 2])
+            ^ GF(11, block[i + 3])
+        )
+        new_block.append(
+            GF(11, block[i])
+            ^ GF(13, block[i + 1])
+            ^ GF(9, block[i + 2])
+            ^ GF(14, block[i + 3])
+        )
     return new_block
 
+
 def key_schedule(key, rcon, sbox):
-    '''
+    """
     Generates a key schedule from a user-supplied key
 
     Args:
@@ -388,10 +443,10 @@ def key_schedule(key, rcon, sbox):
 
     Returns:
         round_keys - all keys prepared for each round stored in matrixs - list of lists of type int
-    '''
+    """
 
     def rotate_key(key):
-        '''
+        """
         Rotates the values ​​contained in the key by 90* to make the algorithm easier to implement
                                                 \n
         n0 n1 n2 n3   -->   n3 n7 nb nf         \n
@@ -404,15 +459,15 @@ def key_schedule(key, rcon, sbox):
 
         Returns:
             key - rotated key values by 90* - list of type int
-        '''
+        """
 
         new_key = []
         i = 0
         while len(new_key) < len(key):
-            new_key.append(key[12+i])
-            new_key.append(key[8+i])
-            new_key.append(key[4+i])
-            new_key.append(key[0+i])
+            new_key.append(key[12 + i])
+            new_key.append(key[8 + i])
+            new_key.append(key[4 + i])
+            new_key.append(key[0 + i])
             i += 1
         return new_key
 
@@ -440,8 +495,9 @@ def key_schedule(key, rcon, sbox):
         key = key[16:]
     return round_keys
 
+
 def add_round_key(block, round_key, size):
-    '''
+    """
     Processes all values ​​in the block using "bitwise \n
     exclusive or" with values ​​of the round key
 
@@ -452,14 +508,15 @@ def add_round_key(block, round_key, size):
 
     Returns:
         block - values after including round_key - List of type int
-    '''
+    """
 
     for i in range(size):
         block[i] = block[i] ^ round_key[i]
     return block
 
+
 def encoder(string_text, size, rotate_rows_schema, sbox, round_keys):
-    '''
+    """
     Recreates the entire Rijndael encryption scheme
 
     Args:
@@ -471,9 +528,9 @@ def encoder(string_text, size, rotate_rows_schema, sbox, round_keys):
 
     Returns:
         output - encrypted text of type string
-    '''
+    """
 
-    blocks = create_blocks(string_text, size, 'encoder')
+    blocks = create_blocks(string_text, size, "encoder")
     actual_round = 0
     for block in blocks:
         block = add_round_key(block, round_keys[0], size)
@@ -504,15 +561,16 @@ def encoder(string_text, size, rotate_rows_schema, sbox, round_keys):
     for block in blocks:
         block = add_round_key(block, round_keys[actual_round], size)
 
-    output = ''
+    output = ""
     for block in blocks:
         for char in block:
-            output += str(char) + ' '
+            output += str(char) + " "
 
-    return output
+    return output.strip()
+
 
 def decoder(string_text, size, rotate_rows_schema, inv_sbox, round_keys):
-    '''
+    """
     Recreates the entire Rijndael decryption scheme
 
     Args:
@@ -524,9 +582,9 @@ def decoder(string_text, size, rotate_rows_schema, inv_sbox, round_keys):
 
     Returns:
         output - decrypted text of type string
-    '''
+    """
 
-    blocks = create_blocks(string_text, size, 'decoder')
+    blocks = create_blocks(string_text, size, "decoder")
     actual_round = 10
     for block in blocks:
         block = add_round_key(block, round_keys[actual_round], size)
@@ -559,7 +617,7 @@ def decoder(string_text, size, rotate_rows_schema, inv_sbox, round_keys):
     for block in blocks:
         block = add_round_key(block, round_keys[actual_round], size)
 
-    output = ''
+    output = ""
     for block in blocks:
         for char in block:
             if char != 3:
@@ -567,21 +625,22 @@ def decoder(string_text, size, rotate_rows_schema, inv_sbox, round_keys):
 
     return output
 
+
 def encode_message(message):
-    '''
+    """
     Preparing all needed data and run function that \n
     recreate the entire Rijndael encryption scheme
     Args:
         message - delivered by user text to be encrypted of type string
     Returns:
         output - encrypted text of type string
-    '''
+    """
 
     if not os.path.exists("data/key.txt"):
         return "Key not found, you must provide it"
 
     size = 16
-    rotate_rows_schema = (0,1,2,3)
+    rotate_rows_schema = (0, 1, 2, 3)
 
     rcon = read_rcon(size)
     sbox = read_sbox(size)
@@ -595,21 +654,22 @@ def encode_message(message):
 
     return encoded_message
 
+
 def decode_message(message):
-    '''
+    """
     Preparing all needed data and run function that \n
     recreate the entire Rijndael decryption scheme
     Args:
         message - delivered by user text to be decrypted of type string
     Returns:
         output - decrypted text of type string
-    '''
+    """
 
     if not os.path.exists("data/key.txt"):
         return "Key not found, you must provide it"
 
     size = 16
-    rotate_rows_schema = (0,1,2,3)
+    rotate_rows_schema = (0, 1, 2, 3)
 
     rcon = read_rcon(size)
     sbox = read_sbox(size)
@@ -623,8 +683,9 @@ def decode_message(message):
 
     return decoded_message
 
+
 def add_key(provided_key):
-    '''
+    """
     Save key provided by user to file "KEY.txt". \n
     Key would be ready for next operation, after \n
     will be deleted
@@ -634,12 +695,12 @@ def add_key(provided_key):
 
     Returns:
         output - True if key was suitable, otherwise False
-    '''
+    """
     if len(provided_key) == 16:
         with open("data/key.txt", "w") as file:
             for counter, char in enumerate(provided_key, 1):
                 file.write("0x{:02x} ".format(ord(char)))
                 if counter % 4 == 0:
-                    file.write('\n')
+                    file.write("\n")
         return True
     return False
