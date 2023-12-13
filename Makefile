@@ -1,9 +1,7 @@
-# Zmienne
 PYTHON = python
 PIP = pip
-PROJECT_NAME = ToDoApp
+PROJECT_NAME = Rijandael-Cipher
 
-# Cele
 .PHONY: install run test lint format
 
 install:
