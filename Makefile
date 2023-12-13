@@ -19,4 +19,7 @@ lint:
 format:
 	black *.py
 
+test:
+	python -m unittest
+
 all: lint format install

@@ -1,5 +1,5 @@
-import cipher
 from fastapi import FastAPI
+import cipher
 
 app = FastAPI()
 
