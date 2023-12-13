@@ -94,7 +94,7 @@ make run
 2. Run FastAPI
 
 ```sh
-In your browser: 127.0.0.1:8000/docs
+In your browser: localhost:8000/docs
 ```
 
 3. Test API and cipher
