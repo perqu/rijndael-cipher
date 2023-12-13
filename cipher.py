@@ -637,7 +637,7 @@ def encode_message(message):
     """
 
     if not os.path.exists("data/key.txt"):
-        return "Key not found, you must provide it"
+        return None
 
     size = 16
     rotate_rows_schema = (0, 1, 2, 3)
@@ -666,7 +666,7 @@ def decode_message(message):
     """
 
     if not os.path.exists("data/key.txt"):
-        return "Key not found, you must provide it"
+        return None
 
     size = 16
     rotate_rows_schema = (0, 1, 2, 3)
