@@ -85,7 +85,7 @@ make all
 
 ## Usage
 
-1. Run uvicorn
+1. Run application with uvicorn
 
 ```sh
 make run
